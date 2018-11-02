@@ -19,9 +19,8 @@ def getSimilarUsers(baseUser, allUsers):
             # Our "Jaccard" will be the average of the two Jaccards
             jaccardScores[user["id"]] = (likesJaccard + dislikesJaccard) / 2
 
-    sortedDict = sorted(jaccardScores.items(), key=operator.itemgetter(1), reverse=True)
-    print(sortedDict)
-    return similarUsers
+    sortedInfo = sorted(jaccardScores.items(), key=operator.itemgetter(1), reverse=True)
+    return sortedInfo
 
 def getSimilarRecipes(recipeId, recipes):
     similarRecipes = []
