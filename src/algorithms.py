@@ -1,4 +1,5 @@
 import operator
+import re
 
 def getSimilarUsers(baseUser, allUsers):
     similarUsers = []
@@ -25,4 +26,13 @@ def getSimilarUsers(baseUser, allUsers):
 def getSimilarRecipes(recipeId, recipes):
     similarRecipes = []
     # TF-IDF for recipes
-    return similarRecipes
+    tf = {}
+    for recipe in recipes.keys():
+        for ingredient in recipes[recipe]["ingredients"]:
+            words = re.findall(r'\w+', ingredient["text"].lower())
+            for word in words:
+                currentValue = tf.get(word, 0)
+                tf[word] = currentValue + 1
+    sortedInfo = sorted(tf.items(), key=operator.itemgetter(1), reverse=False)
+    #print(sortedInfo)
+    return sortedInfo
