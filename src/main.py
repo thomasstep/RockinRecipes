@@ -1,6 +1,6 @@
 import django
 
-from ioFunctions import loadRecipesJson
+from ioFunctions import loadRecipesJson, loadUsersJson, saveUsersJson
 
 fileNames = ["chickenRecipes.json", "beefRecipes.json", "porkRecipes.json", "tofuRecipes.json", "riceRecipes.json", "beansRecipes.json", "americanRecipes.json", "chineseRecipes.json", "mexicanRecipes.json", "italianRecipes.json"]
 recipes = []
@@ -9,3 +9,6 @@ for fileName in fileNames:
     recipeGenre = loadRecipesJson(fileName)
     recipes.append(recipeGenre["recipes"])
 print(recipes)
+users = loadUsersJson()
+print(users)
+saveUsersJson(users)
