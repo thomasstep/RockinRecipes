@@ -9,6 +9,9 @@ for fileName in fileNames:
     recipeGenre = loadRecipesJson(fileName)
     recipes.append(recipeGenre["recipes"])
 print(recipes)
-users = loadUsersJson()
+usersDict = loadUsersJson()
+print(usersDict)
+users = usersDict["users"]
 print(users)
 saveUsersJson(users)
+getSimilarUsers(users["users"][0]["id"], users)
