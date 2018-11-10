@@ -11,4 +11,7 @@ for fileName in fileNames:
 users = loadUsersJson()
 for user in users:
     getSimilarUsers(user, users)
-getSimilarRecipes(0, recipes)
+similarRecipes = getSimilarRecipes(0, recipes)
+for recipe in similarRecipes:
+    if recipe[0] != "0":
+        print(recipes[recipe[0]]["name"])
