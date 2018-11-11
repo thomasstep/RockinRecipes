@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 
 from ioFunctions import loadRecipesJson, loadUsersJson, saveUsersJson
 from algorithms import getSimilarUsers, getSimilarRecipes
@@ -17,10 +17,26 @@ for fileName in fileNames:
 # Getting all user info
 users = loadUsersJson()
 
-@app.route("/getRecommendations")
+@app.route("/getRecommendations", methods=["GET"])
 def getRecommendations():
     similarRecipes = getSimilarRecipes(0, recipes)
     return jsonify(similarRecipes=similarRecipes)
+
+@app.route("/getRecipe", methods=["GET"])
+def getRecipe():
+    requestJson = request.args
+    recipeId = requestJson["recipeId"]
+    recipeInfo = recipes[str(recipeId)]
+    return jsonify(recipe=recipeInfo)
+
+# TODO newUser, getUser (just email)
+
+# @app.route("/getUser", methods=["POST"])
+# def getUser():
+#     user = {
+#         "name": "Thomas"
+#     }
+#     return jsonify(user=)
 
 # for user in users:
 #     getSimilarUsers(user, users)
