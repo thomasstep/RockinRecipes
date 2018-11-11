@@ -88,4 +88,7 @@ def getSimilarRecipes(recipeId, recipes):
     similar = getVectorSpaceModel(recipeId, tf, recipes, totalDocs)
     # Sort the scores then return them
     sortedRecipes = sorted(similar.items(), key=operator.itemgetter(1), reverse=True)
-    return sortedRecipes
+    sortedRecipeIds = []
+    for recipe in sortedRecipes:
+        sortedRecipeIds.append(recipe[0])
+    return sortedRecipeIds
