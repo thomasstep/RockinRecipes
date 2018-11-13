@@ -11,10 +11,25 @@ def loadUsersJson():
     f = open("./data/users.json", "r")
     jsons = f.read()
     users = json.loads(jsons)
-    #print(recipes)
     return users
 
 def saveUsersJson(users):
     filename = "./data/users.json"
     f = open(filename, "w")
     f.write(json.dumps(users))
+
+
+def createUser(email):
+	#~ filename = "./data/users.json"
+	#~ f = open(filename,"r")
+	users = loadUsersJson()
+	new_user = {
+		'id': email,
+		'likes': [],
+		'dislikes': []
+	}
+	
+	users.append(new_user)
+	saveUsersJson(users)
+	
+	

@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, request
 
-from ioFunctions import loadRecipesJson, loadUsersJson, saveUsersJson
+from ioFunctions import loadRecipesJson, loadUsersJson, saveUsersJson, createUser
 from algorithms import getSimilarUsers, getSimilarRecipes
 
 app = Flask(__name__)
@@ -16,6 +16,7 @@ for fileName in fileNames:
 
 # Getting all user info
 users = loadUsersJson()
+createUser('homeboycav@tamu.edu')
 
 @app.route("/getRecommendations", methods=["GET"])
 def getRecommendations():
