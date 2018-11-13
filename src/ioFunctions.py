@@ -33,3 +33,8 @@ def createUser(email):
 	saveUsersJson(users)
 	
 	
+def getUser(email):
+	users = loadUsersJson()
+	for i in users:
+		if (email == i['id']):
+			return i
