@@ -33,12 +33,13 @@ def getRecipe():
     recipeInfo = recipes[str(recipeId)]
     return jsonify(recipeInfo)
 
-# TODO newUser, getUser (just email)
-
 @app.route("/getUser", methods=["GET"])
 def getUser():
     requestJson = request.args
     userId = requestJson["userId"]
+    user = {
+        "status": "Did not work"
+    }
     if str(userId) in users.keys():
         user = users[str(userId)]
     else:
