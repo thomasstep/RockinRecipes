@@ -20,20 +20,12 @@ def saveUsersJson(users):
 
 
 def createUser(email):
-	#~ filename = "./data/users.json"
-	#~ f = open(filename,"r")
-	users = loadUsersJson()
-	new_user = {
-		'likes': [],
-		'dislikes': []
-	}
-
-	users[email] = new_user
-	saveUsersJson(users)
-
-
-def getUser(email):
-	users = loadUsersJson()
-	for i in users:
-		if (email == i['id']):
-			return i
+    #~ filename = "./data/users.json"
+    #~ f = open(filename,"r")
+    users = loadUsersJson()
+    new_user = {
+    'likes': [],
+    'dislikes': []
+    }
+    users[email] = new_user
+    saveUsersJson(users)

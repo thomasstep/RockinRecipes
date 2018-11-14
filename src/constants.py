@@ -1,0 +1,4 @@
+newUserTemplate = {
+    "likes": [],
+    "dislikes": []
+}

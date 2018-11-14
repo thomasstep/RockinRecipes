@@ -1,7 +1,8 @@
 from flask import Flask, jsonify, request
 
-from ioFunctions import loadRecipesJson, loadUsersJson, saveUsersJson, createUser, getUser
+from ioFunctions import loadRecipesJson, loadUsersJson, saveUsersJson, createUser
 from algorithms import getSimilarUsers, getSimilarRecipes
+from constants import newUserTemplate
 
 app = Flask(__name__)
 
@@ -38,7 +39,12 @@ def getRecipe():
 def getUser():
     requestJson = request.args
     userId = requestJson["userId"]
-    user = users[str(userId)]
+    if str(userId) in users.keys():
+        user = users[str(userId)]
+    else:
+        users[str(userId)] = newUserTemplate
+        user = users[str(userId)]
+        saveUsersJson(users)
     return jsonify(user)
 
 # for user in users:
