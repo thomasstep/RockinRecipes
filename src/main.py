@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, request
 
-from ioFunctions import loadRecipesJson, loadUsersJson, saveUsersJson, createUser
+from ioFunctions import loadRecipesJson, loadUsersJson, saveUsersJson, createUser, getUser
 from algorithms import getSimilarUsers, getSimilarRecipes
 
 app = Flask(__name__)
@@ -34,12 +34,12 @@ def getRecipe():
 
 # TODO newUser, getUser (just email)
 
-# @app.route("/getUser", methods=["POST"])
-# def getUser():
-#     user = {
-#         "name": "Thomas"
-#     }
-#     return jsonify(user=)
+@app.route("/getUser", methods=["GET"])
+def getUser():
+    requestJson = request.args
+    userId = requestJson["userId"]
+    user = users[str(userId)]
+    return jsonify(user)
 
 # for user in users:
 #     getSimilarUsers(user, users)

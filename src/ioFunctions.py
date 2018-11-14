@@ -24,15 +24,14 @@ def createUser(email):
 	#~ f = open(filename,"r")
 	users = loadUsersJson()
 	new_user = {
-		'id': email,
 		'likes': [],
 		'dislikes': []
 	}
-	
-	users.append(new_user)
+
+	users[email] = new_user
 	saveUsersJson(users)
-	
-	
+
+
 def getUser(email):
 	users = loadUsersJson()
 	for i in users:
