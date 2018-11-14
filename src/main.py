@@ -31,6 +31,7 @@ def getRecipe():
     requestJson = request.args
     recipeId = requestJson["recipeId"]
     recipeInfo = recipes[str(recipeId)]
+    recipeInfo["recipeId"] = recipeId
     return jsonify(recipeInfo)
 
 @app.route("/getUser", methods=["GET"])
@@ -47,6 +48,11 @@ def getUser():
         user = users[str(userId)]
         saveUsersJson(users)
     return jsonify(user)
+
+@app.route("/getDefaultRecipes", methods=["GET"])
+def getDefaults():
+    defaults = ["0", "100", "200", "300", "400", "500", "600", "700", "800", "900",]
+    return jsonify(defaults)
 
 # for user in users:
 #     getSimilarUsers(user, users)
