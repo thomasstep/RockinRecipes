@@ -1,10 +1,12 @@
 from flask import Flask, jsonify, request
+from flask_cors import CORS
 
 from ioFunctions import loadRecipesJson, loadUsersJson, saveUsersJson, createUser
 from algorithms import getSimilarUsers, getSimilarRecipes
 from constants import newUserTemplate
 
 app = Flask(__name__)
+CORS(app)
 
 # Loading in JSON data
 fileNames = ["chickenRecipes.json", "beefRecipes.json", "porkRecipes.json", "tofuRecipes.json", "riceRecipes.json", "beansRecipes.json", "americanRecipes.json", "chineseRecipes.json", "mexicanRecipes.json", "italianRecipes.json"]
