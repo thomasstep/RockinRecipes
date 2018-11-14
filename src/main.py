@@ -20,15 +20,17 @@ createUser('homeboycav@tamu.edu')
 
 @app.route("/getRecommendations", methods=["GET"])
 def getRecommendations():
-    similarRecipes = getSimilarRecipes(0, recipes)
-    return jsonify(similarRecipes=similarRecipes)
+    requestJson = request.args
+    originalRecipe = requestJson["recipeId"]
+    similarRecipes = getSimilarRecipes(originalRecipe, recipes)
+    return jsonify(similarRecipes)
 
 @app.route("/getRecipe", methods=["GET"])
 def getRecipe():
     requestJson = request.args
     recipeId = requestJson["recipeId"]
     recipeInfo = recipes[str(recipeId)]
-    return jsonify(recipe=recipeInfo)
+    return jsonify(recipeInfo)
 
 # TODO newUser, getUser (just email)
 
