@@ -3,6 +3,7 @@ import './App.css';
 import { Provider } from 'react-redux';
 
 import Login from './Components/Login';
+import Recipes from './Components/Recipes';
 
 import store from './store';
 
@@ -13,6 +14,7 @@ class App extends Component {
         <div className="App">
           <hr />
           <Login />
+          <Recipes />
         </div>
       </Provider>
     );
