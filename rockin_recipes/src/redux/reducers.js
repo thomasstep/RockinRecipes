@@ -1,23 +1,45 @@
-import { LOGIN_USER, LOGIN_USERNAME } from "../actionTypes.js"
+import { LOGIN_USER, LOGIN_USERNAME, ADD_LIKES, ADD_DISLIKES, ADD_RECOMMENDATIONS } from "../actionTypes.js"
 
 export const initialState = {
-    user: {},
-    username: "",
-    userLikes: [],
-    userDislikes: [],
-    recommendations: []
+    user: {
+        username: "",
+        preferences: {
+            likes: [],
+            dislikes: []
+        }
+    },
+    recipeList: {
+        likes: [],
+        dislikes: [],
+        recommendations: []
+    }
 }
 
 export const userReducer = (state = {}, action) => {
     switch (action.type) {
-        case LOGIN_USER:
+        case LOGIN_USERNAME:
+            return action.username
+            break;
+        default:
+            return state
+    }
+}
+
+export const recipeListReducer = (state = {}, action) => {
+    switch (action.type) {
+        case ADD_LIKES:
             return { ...state, ...{
-                preferences: action.user
+                likes: action.likes
             }};
             break;
-        case LOGIN_USERNAME:
+        case ADD_DISLIKES:
             return { ...state, ...{
-                username: action.username
+                dislikes: action.dislikes
+            }};
+            break;
+        case ADD_RECOMMENDATIONS:
+            return { ...state, ...{
+                recommendations: action.recommendations
             }};
             break;
         default:

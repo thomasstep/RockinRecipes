@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
-import { loginUserAction, loginUsernameAction } from "../redux/actions.js"
+import { loginUsernameAction, addLikesAction, addDislikesAction } from "../redux/actions.js"
 import axios from 'axios';
 
 class Login extends Component {
@@ -23,7 +23,8 @@ class Login extends Component {
         event.preventDefault();
         axios.get(`http://localhost:5000/getUser?userId=${this.state.username}`)
             .then(res => {
-                this.props.loginUserAction(res.data)
+                this.props.addLikesAction(res.data.likes)
+                this.props.addDislikesAction(res.data.dislikes)
             })
         this.props.loginUsernameAction(this.state.username);
     }
@@ -50,8 +51,9 @@ function validate(values) {
 }
 
 const mapDispatchToProps = {
-    loginUserAction,
-    loginUsernameAction
+    loginUsernameAction,
+    addLikesAction,
+    addDislikesAction
 };
 
 const mapStateToProps = state => {
