@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Field, reduxForm, values} from 'redux-form';
+import {Field, reduxForm} from 'redux-form';
 import axios from 'axios';
 
 
@@ -15,7 +15,7 @@ class Recipe extends Component {
 renderRecipeIDField(field) {
     return(
         <div className="form-group">
-            <label style ={{paddingRight: '10px'}}>Enter Recipe Number</label>
+            <label style ={{paddingRight: '10px'}}>Enter Recipe ID</label>
             <input
             className ="form-control"
             type="text"
@@ -31,57 +31,58 @@ onSubmit(values){
     axios.get(`http://localhost:5000/getRecommendations?recipeId=${values.RecipeID}`)
         .then(res => {
           console.log(res.data)
-          //recipeID = res.data;
           this.setState({recipeID: res.data})
           for ( var i = 0; i < 10; i++){
             axios.get(`http://localhost:5000/getRecipe?recipeId=${this.state["recipeID"][i]}`)
             .then(res => {
-                //console.log(res.data)
-
-                var test=''
-                for(var j = 0; j < res.data.ingredients.length; ++j){
-                    test=test+" "+(j+1)+": "+res.data.ingredients[j].text
-                }
-                res.data.ingredients = test
+                // var test=''
+                // for(var j = 0; j < res.data.ingredients.length; ++j){
+                //     test=test+" "+(j+1)+": "+res.data.ingredients[j].text
+                // }
+                // res.data.ingredients = test
                 var newData = this.state.rtest.concat([res.data])
                 this.setState({rtest: newData});
-
-                //console.log(test)
-
               })
             }
         })
     }
 
-    render () {
-        //const {recipe} = this.state;
+    render() {
         const {handleSubmit} = this.props;
+        const recipes = this.state.rtest.map(e => (
+            <ul><h3>{e.name}</h3>
+            <ul><a href={e.url}><img src={e.image} alt="img"></img></a></ul>
+            <ul>{listIngredients(e)}</ul>
+            </ul>
+        ));
         return (
             <div>
                 <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
                     <Field
-                    name= "RecipeID"
+                    name="RecipeID"
                     component={this.renderRecipeIDField}
                     />
-                <button type='submit' className ="btn btn-primary">Login</button>
+                <button type='submit' className ="btn btn-primary">Get Recommendations</button>
                 </form>
-
                 <div>
-                    {this.state.rtest.map(e =>(
-                        <ul><h3>{e.name}</h3>
-                        <ul><img src={e.image} alt="img" ></img></ul>
-                        <ul>{e.ingredients}</ul>
-                        </ul>
-
-
-                    ))}
+                    {recipes}
                 </div>
             </div>
         )
     }
 }
 
-
+function listIngredients(recipe) {
+    let ingredients = "";
+    for (var i = 0; i < recipe.ingredients.length; i++) {
+        ingredients += i+1
+        ingredients += ": "
+        ingredients += recipe.ingredients[i].text;
+        ingredients += " ";
+    }
+    console.log(ingredients);
+    return ingredients;
+}
 
 function validate(values) {
     const errors = {};
@@ -89,9 +90,9 @@ function validate(values) {
     {
         errors.recipeID = 'Please enter a recipe between 1 and 1000';
     }
-
     return errors;
 }
+
 export default reduxForm({
     validate,
     form: 'RecipeID'

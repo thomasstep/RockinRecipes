@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Field, reduxForm, values} from 'redux-form';
+import {Field, reduxForm} from 'redux-form';
 
 class Login extends Component {
 renderEmailField(field){
@@ -29,7 +29,7 @@ onSubmit(values){
                 />
             <button type='submit' className ="btn btn-primary">Login</button>
             </form>
-            
+
         )
     }
 }
