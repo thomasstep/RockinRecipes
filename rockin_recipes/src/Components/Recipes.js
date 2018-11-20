@@ -3,12 +3,28 @@ import {Field, reduxForm, values} from 'redux-form';
 import axios from 'axios';
 
 class Recipe extends Component {
-renderRecipeIDField(field){
+    constructor()
+    {
+    super();
+    this.state = {
+        recipe: [
+            {
+                recipeName: '',
+                recipeIngredients: {},
+                recipeImage: '',
+            }
+        ]
+
+      }
+    }
+    
+
+renderRecipeIDField(field) {
     return(
         <div className="form-group">
             <label style ={{paddingRight: '10px'}}>Enter Recipe Number</label>
             <input
-            className ="form-countrol"
+            className ="form-control"
             type="text"
             {...field.input}
             />
@@ -16,28 +32,30 @@ renderRecipeIDField(field){
         </div>
     )
 }
+
 onSubmit(values){
-    console.log(values.RecipeID)
-    var recipes = [];
+    console.log('hello');
     axios.get(`http://localhost:5000/getRecommendations?recipeId=${values.RecipeID}`)
         .then(res => {
-          recipes = res.data;
-          for ( var i = 0; i < recipes.length; i++){
+          //recipeID = res.data;
+          this.setState({recipeID: res.data})
+          for ( var i = 0; i < this.state.recipeID.length; i++){
             axios.get(`http://localhost:5000/getRecipe?recipeId=${i}`)
-            .then(ans => {
-                return(
-                    <div>
-                        <img src={require(ans.data.image)} alt="product" />
-                    </div>
-                )      
-            })
-        }
-    })
-}
+            .then(res => {
+                this.setState({recipeName: res.data.name})
+                this.setState({recipeIngredients: res.data.ingredients})
+                this.setState({recipeImage: res.data.image})
+                console.log(this.state);
+              })
+            }
+        })
+    }
+
 
     render () {
         const {handleSubmit} = this.props;
         return (
+            <div>
             <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
                 <Field
                 name= "RecipeID"
@@ -45,6 +63,19 @@ onSubmit(values){
                 />
             <button type='submit' className ="btn btn-primary">Login</button>
             </form>
+            {/* <ul>
+                {
+                    this.state.recipe.map((dynamic,i) =>
+                    <div>
+                        <li key={dynamic.recipeName}> {dynamic.recipeName}</li>)}
+                        { <p>{dynamic.recipeIngredients}</p> }
+                    </div>
+                    )
+                }
+            </ul> */}
+            </div>
+            
+    
             
         )
     }
