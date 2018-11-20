@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 
 import Login from './Components/Login';
 import Recipes from './Components/Recipes';
+import RecipeList from './Components/RecipeList';
 
 import store from './store';
 
@@ -12,9 +13,9 @@ class App extends Component {
     return (
       <Provider store={store}>
         <div className="App">
-          <hr />
           <Login />
           <Recipes />
+          <RecipeList />
         </div>
       </Provider>
     );

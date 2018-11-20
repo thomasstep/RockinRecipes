@@ -1,38 +1,44 @@
-import React, {Component} from 'react';
-import {Field, reduxForm} from 'redux-form';
+import React, { Component } from 'react';
+import { connect } from "react-redux";
+import { loginUserAction, loginUsernameAction } from "../redux/actions.js"
+import axios from 'axios';
 
 class Login extends Component {
-renderEmailField(field){
-    return(
-        <div className="form-group">
-            <label style ={{paddingRight: '10px'}}>Login with Email</label>
-            <input
-            className ="form-countrol"
-            type="text"
-            {...field.input}
-            />
-            {field.meta.touched ? field.meta.error: ''}
-        </div>
-    )
-}
-onSubmit(values){
-    console.log(values);
 
-}
+    constructor() {
+        super();
+        this.state = {
+            username: "",
+            user: {}
+        }
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this)
+    }
+
+    handleChange(event) {
+        this.setState({username: event.target.value});
+    }
+
+    handleSubmit(event){
+        event.preventDefault();
+        axios.get(`http://localhost:5000/getUser?userId=${this.state.username}`)
+            .then(res => {
+                this.props.loginUserAction(res.data)
+            })
+        this.props.loginUsernameAction(this.state.username);
+    }
+
     render () {
-        const {handleSubmit} = this.props;
         return (
-            <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
-                <Field
-                name= "email"
-                component={this.renderEmailField}
-                />
-            <button type='submit' className ="btn btn-primary">Login</button>
+            <form onSubmit={this.handleSubmit}>
+                Please enter your email&nbsp;
+                <input type="text" value={this.state.username} onChange={this.handleChange}></input><br/>
+                <input type="submit" value="Login"></input><br/>
             </form>
-
         )
     }
 }
+
 function validate(values) {
     const errors = {};
     if(!values.email)
@@ -42,7 +48,16 @@ function validate(values) {
 
     return errors;
 }
-export default reduxForm({
-    validate,
-    form: 'Login'
-})(Login);
+
+const mapDispatchToProps = {
+    loginUserAction,
+    loginUsernameAction
+};
+
+const mapStateToProps = state => {
+    return {
+        user: state.user
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login)

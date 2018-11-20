@@ -11,20 +11,6 @@ class Recipe extends Component {
         }
     }
 
-    renderRecipeIDField(field) {
-        return(
-            <div className="form-group">
-                <label style ={{paddingRight: '10px'}}>Enter Recipe ID</label>
-                <input
-                    className ="form-control"
-                    type="text"
-                    {...field.input}
-                />
-                {field.meta.touched ? field.meta.error: ''}
-                </div>
-        )
-    }
-
     onSubmit(values){
         this.setState({recipes: []});
         axios.get(`http://localhost:5000/getRecommendations?recipeId=${values.RecipeID}`)
@@ -56,16 +42,11 @@ class Recipe extends Component {
         return (
             <div>
                 <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
-                    <Field
-                        name="RecipeID"
-                        component={this.renderRecipeIDField}
-                    />
-                    <button type="submit" className ="btn btn-primary">Get Recommendations</button>
+                    Please enter a recipe ID&nbsp;
+                    <input type="text" value={this.props.username} onChange={this.handleChange}></input><br/>
+                    <input type="submit" value="Get Recommendations"></input><br/>
                     {this.state.recipes.length > 0 ? <h2>Click on a recipe's picture for more information.</h2> : <h2></h2>}
                 </form>
-                <div>
-                    {recipes}
-                </div>
             </div>
         )
     }
