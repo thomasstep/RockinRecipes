@@ -34,9 +34,9 @@ onSubmit(values){
           //recipeID = res.data;
           this.setState({recipeID: res.data})
           for ( var i = 0; i < 10; i++){
-            axios.get(`http://localhost:5000/getRecipe?recipeId=${i}`)
+            axios.get(`http://localhost:5000/getRecipe?recipeId=${this.state["recipeID"][i]}`)
             .then(res => {
-                console.log(res.data)
+                //console.log(res.data)
 
                 var test=''
                 for(var j = 0; j < res.data.ingredients.length; ++j){
@@ -45,14 +45,14 @@ onSubmit(values){
                 res.data.ingredients = test
                 var newData = this.state.rtest.concat([res.data])
                 this.setState({rtest: newData});
-                
-                console.log(test)
+
+                //console.log(test)
 
               })
             }
         })
     }
-    
+
     render () {
         //const {recipe} = this.state;
         const {handleSubmit} = this.props;
@@ -63,16 +63,16 @@ onSubmit(values){
                     name= "RecipeID"
                     component={this.renderRecipeIDField}
                     />
-                <button type='submit' className ="btn btn-primary">Login</button>  
+                <button type='submit' className ="btn btn-primary">Login</button>
                 </form>
 
                 <div>
                     {this.state.rtest.map(e =>(
-                        <ul><h3>{e.name}</h3> 
+                        <ul><h3>{e.name}</h3>
                         <ul><img src={e.image} alt="img" ></img></ul>
                         <ul>{e.ingredients}</ul>
                         </ul>
-                        
+
 
                     ))}
                 </div>
