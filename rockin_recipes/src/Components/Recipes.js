@@ -8,7 +8,7 @@ class Recipe extends Component {
     {
     super();
     this.state = {
-         rtest: []
+         recipes: []
       }
     }
     
@@ -17,9 +17,9 @@ renderRecipeIDField(field) {
         <div className="form-group">
             <label style ={{paddingRight: '10px'}}>Enter Recipe ID</label>
             <input
-            className ="form-control"
-            type="text"
-            {...field.input}
+                className ="form-control"
+                type="text"
+                {...field.input}
             />
             {field.meta.touched ? field.meta.error: ''}
         </div>
@@ -27,21 +27,20 @@ renderRecipeIDField(field) {
 }
 
 onSubmit(values){
-    this.setState({rtest: []});
+    this.setState({recipes: []});
     axios.get(`http://localhost:5000/getRecommendations?recipeId=${values.RecipeID}`)
         .then(res => {
-          console.log(res.data)
-          this.setState({recipeID: res.data})
+          this.setState({recommendations: res.data})
           for ( var i = 0; i < 10; i++){
-            axios.get(`http://localhost:5000/getRecipe?recipeId=${this.state["recipeID"][i]}`)
+            axios.get(`http://localhost:5000/getRecipe?recipeId=${this.state.recommendations[i]}`)
             .then(res => {
                 // var test=''
                 // for(var j = 0; j < res.data.ingredients.length; ++j){
                 //     test=test+" "+(j+1)+": "+res.data.ingredients[j].text
                 // }
                 // res.data.ingredients = test
-                var newData = this.state.rtest.concat([res.data])
-                this.setState({rtest: newData});
+                var newData = this.state.recipes.concat([res.data])
+                this.setState({recipes: newData});
               })
             }
         })
@@ -49,20 +48,25 @@ onSubmit(values){
 
     render() {
         const {handleSubmit} = this.props;
-        const recipes = this.state.rtest.map(e => (
-            <ul><h3>{e.name}</h3>
-            <ul><a href={e.url}><img src={e.image} alt="img"></img></a></ul>
-            <ul>{listIngredients(e)}</ul>
-            </ul>
+        const displayStyle = {
+            style: "center"
+        }
+        const recipes = this.state.recipes.map(e => (
+            <React.Fragment>
+                <h3 style={displayStyle}>{e.name}</h3>
+                <a href={e.url}><img style={displayStyle} src={e.image} alt="img"></img></a>
+                <p style={displayStyle}>{listIngredients(e)}</p>
+            </React.Fragment>
         ));
         return (
             <div>
                 <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
                     <Field
-                    name="RecipeID"
-                    component={this.renderRecipeIDField}
+                        name="RecipeID"
+                        component={this.renderRecipeIDField}
                     />
-                <button type='submit' className ="btn btn-primary">Get Recommendations</button>
+                <button type="submit" className ="btn btn-primary">Get Recommendations</button>
+                {this.state.recipes.length > 0 ? <h2>Click on a recipe's picture for more information.</h2> : <h2></h2>}
                 </form>
                 <div>
                     {recipes}
@@ -75,12 +79,11 @@ onSubmit(values){
 function listIngredients(recipe) {
     let ingredients = "";
     for (var i = 0; i < recipe.ingredients.length; i++) {
-        ingredients += i+1
+        ingredients += i + 1
         ingredients += ": "
         ingredients += recipe.ingredients[i].text;
         ingredients += " ";
     }
-    console.log(ingredients);
     return ingredients;
 }
 
@@ -88,7 +91,7 @@ function validate(values) {
     const errors = {};
     if(values.recipeID > 1000 || values.recipeID < 0)
     {
-        errors.recipeID = 'Please enter a recipe between 1 and 1000';
+        errors.recipeID = "Please enter a recipe between 1 and 1000";
     }
     return errors;
 }
