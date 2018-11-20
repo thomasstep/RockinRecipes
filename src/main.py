@@ -56,55 +56,42 @@ def getDefaults():
     defaults = ["0", "100", "200", "300", "400", "500", "600", "700", "800", "900",]
     return jsonify(defaults)
 
-@app.route("/addLike",methods=["POST"])
+@app.route("/addLike",methods=["GET"])
 def addLike():
     requestJson = request.args
     userId = requestJson["userId"]
-    recipeId = requestJson["recipeId"']
-    
+    recipeId = requestJson["recipeId"]
+
     user = {
         "status": "Did not work"
     }
     if str(userId) in users.keys():
         user = users[str(userId)]
-        user['likes'].append(recipeId)
     else:
         users[str(userId)] = newUserTemplate
         user = users[str(userId)]
-        user['likes'].append(recipeId)
-        saveUsersJson(users)
+    user['likes'].append(int(recipeId))
+    saveUsersJson(users)
     return jsonify(user)
-        
-    
-@app.route("/addDislike",methods=["Post"])
+
+
+@app.route("/addDislike",methods=["GET"])
 def addDislike():
     requestJson = request.args
     userId = requestJson["userId"]
-    recipeId = requestJson["recipeId"']
-    
+    recipeId = requestJson["recipeId"]
+
     user = {
         "status": "Did not work"
     }
     if str(userId) in users.keys():
         user = users[str(userId)]
-        user['dislikes'].append(recipeId)
     else:
         users[str(userId)] = newUserTemplate
         user = users[str(userId)]
-        user['dislikes'].append(recipeId)
-        saveUsersJson(users)
+    user['dislikes'].append(int(recipeId))
+    saveUsersJson(users)
     return jsonify(user)
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
 
 #TODO add to a users likes and dislikes, recommender using similar users and recipes
 

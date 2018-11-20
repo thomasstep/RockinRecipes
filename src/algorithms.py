@@ -93,5 +93,3 @@ def getSimilarRecipes(recipeId, recipes):
         sortedRecipeIds.append(recipe[0])
     sortedRecipeIds = sortedRecipeIds[:100]
     return sortedRecipeIds  
-    
-    
