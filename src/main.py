@@ -56,6 +56,59 @@ def getDefaults():
     defaults = ["0", "100", "200", "300", "400", "500", "600", "700", "800", "900",]
     return jsonify(defaults)
 
+@app.route("/addLike",methods=["POST"])
+def addLike():
+    requestJson = request.args
+    userId = requestJson["userId"]
+    recipeId = requestJson["recipeId"']
+    
+    user = {
+        "status": "Did not work"
+    }
+    if str(userId) in users.keys():
+        user = users[str(userId)]
+        user['likes'].append(recipeId)
+    else:
+        users[str(userId)] = newUserTemplate
+        user = users[str(userId)]
+        user['likes'].append(recipeId)
+        saveUsersJson(users)
+    return jsonify(user)
+        
+    
+@app.route("/addDislike",methods=["Post"])
+def addDislike():
+    requestJson = request.args
+    userId = requestJson["userId"]
+    recipeId = requestJson["recipeId"']
+    
+    user = {
+        "status": "Did not work"
+    }
+    if str(userId) in users.keys():
+        user = users[str(userId)]
+        user['dislikes'].append(recipeId)
+    else:
+        users[str(userId)] = newUserTemplate
+        user = users[str(userId)]
+        user['dislikes'].append(recipeId)
+        saveUsersJson(users)
+    return jsonify(user)
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+#TODO add to a users likes and dislikes, recommender using similar users and recipes
+
+
 # for user in users:
 #     getSimilarUsers(user, users)
 # similarRecipes = getSimilarRecipes(0, recipes)
