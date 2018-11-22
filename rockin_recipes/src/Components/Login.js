@@ -19,14 +19,32 @@ class Login extends Component {
         this.setState({username: event.target.value});
     }
 
-    handleSubmit(event){
+    handleSubmit(event) {
         event.preventDefault();
+
         axios.get(`http://localhost:5000/getUser?userId=${this.state.username}`)
             .then(res => {
-                this.props.addLikesAction(res.data.likes)
-                this.props.addDislikesAction(res.data.dislikes)
-            })
-        this.props.loginUsernameAction(this.state.username);
+                var likesIds = res.data.likes;
+                var likesList = [];
+                for (var i = 0; i < likesIds.length; i++) {
+                    axios.get(`http://localhost:5000/getRecipe?recipeId=${likesIds[i]}`)
+                        .then(res => {
+                            likesList.push(res.data)
+                        });
+                }
+                this.props.addLikesAction(likesList);
+
+                var dislikesIds = res.data.dislikes;
+                var dislikesList = [];
+                for (var j = 0; j < dislikesIds.length; j++) {
+                    axios.get(`http://localhost:5000/getRecipe?recipeId=${dislikesIds[j]}`)
+                        .then(res => {
+                            dislikesList.push(res.data)
+                        });
+                }
+                this.props.addDislikesAction(dislikesList);
+                this.props.loginUsernameAction(this.state.username);
+            });
     }
 
     render () {
@@ -58,7 +76,8 @@ const mapDispatchToProps = {
 
 const mapStateToProps = state => {
     return {
-        user: state.user
+        user: state.user,
+        recipeList: state.recipeList
     }
 };
 

@@ -5,8 +5,7 @@ import {
     combineReducers
 } from 'redux';
 import reduxThunk from 'redux-thunk';
-import { initialState, userReducer, usernameReducer, recipeListReducer } from "./redux/reducers.js"
-import { loginUserAction, loginUsernameAction } from "./redux/actions.js"
+import { initialState, userReducer, recipeListReducer } from "./redux/reducers.js"
 
 const  rootReducer = combineReducers({
     user: userReducer,
