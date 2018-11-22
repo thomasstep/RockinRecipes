@@ -9,17 +9,22 @@ import RecipeList from './Components/RecipeList';
 import store from './store';
 
 class App extends Component {
-  render() {
-    return (
-      <Provider store={store}>
-        <div className="App">
-          <Login />
-          <Recommendations />
-          <RecipeList />
-        </div>
-      </Provider>
-    );
-  }
+    componentWillMount() {
+        document.title = "Rockin' Recipes";
+    }
+
+    render() {
+        return (
+            <Provider store={store}>
+                <div className="App">
+                  <Login />
+                  <br/>
+                  <Recommendations />
+                  <RecipeList />
+                </div>
+            </Provider>
+        );
+    }
 }
 
 export default App;

@@ -63,13 +63,13 @@ class Recommendations extends Component {
     }
 }
 
-function validate(values) {
-    const errors = {};
-    if(values.recipeID > 1000 || values.recipeID < 0) {
-        errors.recipeID = "Please enter a recipe between 1 and 1000";
-    }
-    return errors;
-}
+// function validate(values) {
+//     const errors = {};
+//     if(values.recipeID > 1000 || values.recipeID < 0) {
+//         errors.recipeID = "Please enter a recipe between 1 and 1000";
+//     }
+//     return errors;
+// }
 
 const mapDispatchToProps = {
     addRecommendationsAction
