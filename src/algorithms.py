@@ -90,6 +90,7 @@ def getSimilarRecipes(recipeId, recipes):
     sortedRecipes = sorted(similar.items(), key=operator.itemgetter(1), reverse=True)
     sortedRecipeIds = []
     for recipe in sortedRecipes:
-        sortedRecipeIds.append(recipe[0])
+        if recipe[0] != recipeId:
+            sortedRecipeIds.append(recipe[0])
     sortedRecipeIds = sortedRecipeIds[:100]
-    return sortedRecipeIds  
+    return sortedRecipeIds

@@ -29,7 +29,8 @@ class Login extends Component {
                 for (var i = 0; i < likesIds.length; i++) {
                     axios.get(`http://localhost:5000/getRecipe?recipeId=${likesIds[i]}`)
                         .then(res => {
-                            likesList.push(res.data)
+                            var data = res.data;
+                            likesList.push(data);
                         });
                 }
                 this.props.addLikesAction(likesList);
@@ -39,7 +40,8 @@ class Login extends Component {
                 for (var j = 0; j < dislikesIds.length; j++) {
                     axios.get(`http://localhost:5000/getRecipe?recipeId=${dislikesIds[j]}`)
                         .then(res => {
-                            dislikesList.push(res.data)
+                            var data = res.data;
+                            dislikesList.push(data);
                         });
                 }
                 this.props.addDislikesAction(dislikesList);
@@ -57,16 +59,6 @@ class Login extends Component {
         )
     }
 }
-
-// function validate(values) {
-//     const errors = {};
-//     if(!values.email)
-//     {
-//         errors.email = 'Please enter an email';
-//     }
-//
-//     return errors;
-// }
 
 const mapDispatchToProps = {
     loginUsernameAction,
