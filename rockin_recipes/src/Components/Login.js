@@ -1,48 +1,84 @@
-import React, {Component} from 'react';
-import {Field, reduxForm} from 'redux-form';
+import React, { Component } from 'react';
+import { connect } from "react-redux";
+import { loginUsernameAction, addLikesAction, addDislikesAction } from "../redux/actions.js"
+import axios from 'axios';
 
 class Login extends Component {
-renderEmailField(field){
-    return(
-        <div className="form-group">
-            <label style ={{paddingRight: '10px'}}>Login with Email</label>
-            <input
-            className ="form-countrol"
-            type="text"
-            {...field.input}
-            />
-            {field.meta.touched ? field.meta.error: ''}
-        </div>
-    )
-}
-onSubmit(values){
-    console.log(values);
 
-}
+    constructor() {
+        super();
+        this.state = {
+            username: "",
+            user: {}
+        }
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this)
+    }
+
+    handleChange(event) {
+        this.setState({username: event.target.value});
+    }
+
+    handleSubmit(event) {
+        event.preventDefault();
+
+        axios.get(`http://localhost:5000/getUser?userId=${this.state.username}`)
+            .then(res => {
+                var likesIds = res.data.likes;
+                var likesList = [];
+                for (var i = 0; i < likesIds.length; i++) {
+                    axios.get(`http://localhost:5000/getRecipe?recipeId=${likesIds[i]}`)
+                        .then(res => {
+                            likesList.push(res.data)
+                        });
+                }
+                this.props.addLikesAction(likesList);
+
+                var dislikesIds = res.data.dislikes;
+                var dislikesList = [];
+                for (var j = 0; j < dislikesIds.length; j++) {
+                    axios.get(`http://localhost:5000/getRecipe?recipeId=${dislikesIds[j]}`)
+                        .then(res => {
+                            dislikesList.push(res.data)
+                        });
+                }
+                this.props.addDislikesAction(dislikesList);
+                this.props.loginUsernameAction(this.state.username);
+            });
+    }
+
     render () {
-        const {handleSubmit} = this.props;
         return (
-            <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
-                <Field
-                name= "email"
-                component={this.renderEmailField}
-                />
-            <button type='submit' className ="btn btn-primary">Login</button>
+            <form onSubmit={this.handleSubmit}>
+                Please enter your email&nbsp;
+                <input type="text" value={this.state.username} onChange={this.handleChange}></input><br/>
+                <input type="submit" value="Login"></input><br/>
             </form>
-
         )
     }
 }
-function validate(values) {
-    const errors = {};
-    if(!values.email)
-    {
-        errors.email = 'Please enter an email';
-    }
 
-    return errors;
-}
-export default reduxForm({
-    validate,
-    form: 'Login'
-})(Login);
+// function validate(values) {
+//     const errors = {};
+//     if(!values.email)
+//     {
+//         errors.email = 'Please enter an email';
+//     }
+//
+//     return errors;
+// }
+
+const mapDispatchToProps = {
+    loginUsernameAction,
+    addLikesAction,
+    addDislikesAction
+};
+
+const mapStateToProps = state => {
+    return {
+        user: state.user,
+        recipeList: state.recipeList
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login)
