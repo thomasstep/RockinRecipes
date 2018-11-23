@@ -2,7 +2,7 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 
 from ioFunctions import loadRecipesJson, loadUsersJson, saveUsersJson, createUser
-from algorithms import getSimilarUsers, getSimilarRecipes
+from algorithms import getSimilarUsers, getSimilarRecipes, searchCorpus
 from constants import newUserTemplate
 
 app = Flask(__name__)
@@ -27,6 +27,12 @@ def getRecommendations():
     originalRecipe = requestJson["recipeId"]
     similarRecipes = getSimilarRecipes(originalRecipe, recipes)
     return jsonify(similarRecipes)
+
+@app.route("/getSearchResults", methods=["GET"])
+def getSearchResults():
+    requestJson = request.args
+    query = requestJson["query"]
+    results = searchCorpus(query, recipes)
 
 @app.route("/getRecipe", methods=["GET"])
 def getRecipe():
