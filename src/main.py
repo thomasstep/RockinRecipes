@@ -33,6 +33,7 @@ def getSearchResults():
     requestJson = request.args
     query = requestJson["query"]
     results = searchCorpus(query, recipes)
+    return jsonify(results)
 
 @app.route("/getRecipe", methods=["GET"])
 def getRecipe():
