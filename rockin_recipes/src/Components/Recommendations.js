@@ -14,24 +14,10 @@ class Recommendations extends Component {
         }
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleSearchChange = this.handleSearchChange.bind(this);
+        this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
         this.handleSelectChange = this.handleSelectChange.bind(this);
         this.handleSelectSubmit = this.handleSelectSubmit.bind(this);
-    }
-
-    onSubmit(values) {
-        this.setState({ recipes: [] });
-        axios.get(`http://localhost:5000/getRecommendations?recipeId=${values.RecipeID}`)
-            .then(res => {
-                this.setState({ recommendations: res.data })
-                for (var i = 0; i < 10; i++) {
-                    axios.get(`http://localhost:5000/getRecipe?recipeId=${this.state.recommendations[i]}`)
-                        .then(res => {
-                            // Either this gets super huge or recipes is always empty so no need to concat
-                            var newData = this.state.recipes.concat([res.data])
-                            this.setState({ recipes: newData });
-                        })
-                }
-            })
     }
 
     handleChange(event) {
@@ -42,6 +28,10 @@ class Recommendations extends Component {
         this.setState({ foodSelection: event.target.value });
     }
 
+    handleSearchChange(event) {
+        this.setState({foodType: event.target.value});
+    }
+
     handleSubmit(event) {
         event.preventDefault();
         var recommendationsList = [];
@@ -49,7 +39,7 @@ class Recommendations extends Component {
             .then(res => {
                 recommendationsList.push(res.data);
         });
-        axios.get(`http://localhost:5000/getIdRecommendations?recipeId=${this.state.recipeId}`)
+        axios.get(`http://localhost:5000/getIdRecommendations?recipeId=${this.state.recipeId}`)
             .then(res => {
                 var recommendations = res.data;
                 for (var i = 0; i < 10; i++) {
@@ -80,8 +70,23 @@ class Recommendations extends Component {
         }
     }
 
+    handleSearchSubmit(event) {
+        event.preventDefault();
+        var foodRecommendationsList = [];
+        axios.get(`http://localhost:5000/getSearchResults?query=${this.state.foodType}`)
+            .then(res => {
+                var recommendations = res.data;
+                for ( var i = 0; i < 10; i++){
+                    axios.get(`http://localhost:5000/getRecipe?recipeId=${recommendations[i]}`)
+                        .then(res => {
+                            foodRecommendationsList.push(res.data);
+                    });
+                }
+                this.props.addRecommendationsAction(foodRecommendationsList);
+            });
+    }
 
-    render() {
+    render() {
         return (
             <div>
                 <form onSubmit={this.handleSubmit}>
@@ -108,7 +113,12 @@ class Recommendations extends Component {
                     </label>
                     <input type="submit" value="Submit"></input><br />
                 </form>
-
+                <form onSubmit={this.handleSearchSubmit}>
+                    Please enter a food&nbsp;
+                    <input type="text" value={this.state.foodType} onChange={this.handleSearchChange}></input><br/>
+                    <input type="submit" value="Get Food Recomendations"></input><br/>
+                </form>
+                
             </div>
         )
     }
