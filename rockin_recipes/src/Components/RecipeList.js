@@ -2,18 +2,10 @@ import React, {Component} from 'react';
 import { connect } from "react-redux";
 
 class RecipeList extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            likes: [],
-            dislikes: [],
-            recommendations: []
-        };
-    }
-
     componentDidMount() {
         this.interval = setInterval(() => {this.forceUpdate()}, 1000);
     }
+
     componentWillUnmount() {
         clearInterval(this.interval);
     }
@@ -38,6 +30,7 @@ class RecipeList extends Component {
         const likes = this.props.likes.map(e => (
             <React.Fragment>
                 <h3 style={displayStyle}>{e.name}</h3>
+                <h3 style={displayStyle}>Recipe ID: {e.recipeId}</h3>
                 <a href={e.url}><img style={displayStyle} src={e.image} alt="img"></img></a>
                 <p style={displayStyle}>{listIngredients(e)}</p>
             </React.Fragment>
@@ -45,6 +38,7 @@ class RecipeList extends Component {
         const dislikes = this.props.dislikes.map(e => (
             <React.Fragment>
                 <h3 style={displayStyle}>{e.name}</h3>
+                <h3 style={displayStyle}>Recipe ID: {e.recipeId}</h3>
                 <a href={e.url}><img style={displayStyle} src={e.image} alt="img"></img></a>
                 <p style={displayStyle}>{listIngredients(e)}</p>
             </React.Fragment>
