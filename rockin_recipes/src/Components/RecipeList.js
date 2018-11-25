@@ -53,6 +53,7 @@ class RecipeList extends Component {
                 <img style={displayStyle} src={e.image} alt="img"></img>
                 <div> <a href={e.url}>Click Here To Go To Recipe</a> </div>
                 <p style={displayStyle}>{listIngredients(e)}</p>
+                <Likes recipeid={e.recipeId} userid={this.props.user}></Likes>
             </React.Fragment>
         ));
         return (
