@@ -12,8 +12,21 @@ class RecipeList extends Component {
 
     render() {
         const displayStyle = {
-            style: "center"
+            style: "center",
         };
+        const likesHeader = {
+            fontSize: '35px',
+            color: 'blue',
+        }
+        const dislikesHeader = {
+            fontSize: '35px',
+            color: 'red',
+        }
+        const recommendationsHeader = {
+            fontSize: '35px',
+            color: 'green',
+        }
+        
         const likes = this.props.likes.map(e => (
             <React.Fragment>
                 <h3 style={displayStyle}>{e.name}</h3>
@@ -33,20 +46,23 @@ class RecipeList extends Component {
         const recommendations = this.props.recommendations.map(e => (
             <React.Fragment>
                 <h3 style={displayStyle}>{e.name}</h3>
-                <h3 style={displayStyle}>Recipe ID: {e.recipeId}</h3>
-                <a href={e.url}><img style={displayStyle} src={e.image} alt="img"></img></a>
+                <img style={displayStyle} src={e.image} alt="img"></img>
+                <div> <a href={e.url}>Click Here To Go To Recipe</a> </div>
                 <p style={displayStyle}>{listIngredients(e)}</p>
             </React.Fragment>
         ));
         return (
+        <div>
+            
             <div>
-                {this.props.user === "" ? <h2>Please log in</h2> : <h2>Logged in as {this.props.user}</h2>}
-                {this.props.recommendations.length === 0 ? <h2></h2> : <h2>Recommendations</h2>}
+                {this.props.user === "" ? <h2>Please log in</h2> : <h2>Welcome {this.props.user}!</h2>}
+                {this.props.recommendations.length === 0 ? <h2></h2> : <h2 style={recommendationsHeader}>These are some recipes we would like to recommend</h2>}
                 {recommendations}
-                {this.props.likes.length === 0 ? <h2></h2> : <h2>Likes</h2>}
+                {this.props.likes.length === 0 ? <h2></h2> : <h2 style={likesHeader}>Recipes You've Liked</h2>}
                 {likes}
-                {this.props.dislikes.length === 0 ? <h2></h2> : <h2>Dislikes</h2>}
+                {this.props.dislikes.length === 0 ? <h2></h2> : <h2 style={dislikesHeader}>Recipes You've Disliked</h2>}
                 {dislikes}
+            </div>
             </div>
         )
     }

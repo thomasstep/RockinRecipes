@@ -50,12 +50,20 @@ class Login extends Component {
     }
 
     render () {
+        const title = {
+            fontSize: '60px',
+            color: 'purple',
+            textAlign: 'center',
+        }
         return (
+            <div>
+            <h1 style={title}>ROCKIN' RECIPES</h1>
             <form onSubmit={this.handleSubmit}>
                 Please enter your email&nbsp;
                 <input type="text" value={this.state.username} onChange={this.handleChange}></input><br/>
                 <input type="submit" value="Login"></input><br/>
             </form>
+            </div>
         )
     }
 }
