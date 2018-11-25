@@ -4,21 +4,22 @@ from math import log,log10, sqrt
 
 
 # Ranks users by similarity based on Jaccard
-def getSimilarUsers(baseUser, allUsers):
+def getSimilarUsers(baseUserId, allUsers):
     similarUsers = []
     jaccardScores = {}
     # Look at similar likes and dislikes in all other users
-    baseUser = allUsers[baseUserId]
+    baseUserId = allUsers[baseUserId]
+    
     for userid in allUsers.keys():
         user = allUsers[userid]
         if baseUserId != userid:
-            likesIntersection = set(baseUser["likes"]) & set(user["likes"])
-            likesUnion = set(baseUser["likes"]) | set(user["likes"])
+            likesIntersection = set(baseUserId['likes']) & set(user["likes"])
+            likesUnion = set(baseUserId["likes"]) | set(user["likes"])
             if len(likesUnion) != 0:
                 likesJaccard = len(likesIntersection) / len(likesUnion)
 
-            dislikesIntersection = set(baseUser["dislikes"]) & set(user["dislikes"])
-            dislikesUnion = set(baseUser["dislikes"]) | set(user["dislikes"])
+            dislikesIntersection = set(baseUserId["dislikes"]) & set(user["dislikes"])
+            dislikesUnion = set(baseUserId["dislikes"]) | set(user["dislikes"])
             if len(dislikesUnion) != 0:
                 dislikesJaccard = len(dislikesIntersection) / len(dislikesUnion)
 
@@ -115,19 +116,19 @@ def recommender(userId, recipeId, allUsers, allRecipes):
     
     simRecipes = getSimilarRecipes(recipeId,allRecipes)
     simUsers = getSimilarUsers(userId, allUsers)[:10]
-    recommendation = []
+    recommendation = set()
         
     for recipeId in simRecipes:
         for user in simUsers:
             if int(recipeId) in allUsers[user[0]]['likes']:
-                recommendation.append(recipeId)
+                recommendation.add(recipeId)
                 
-                
+    
     if (len(recommendation) == 0):
         print("no recommendation")
         return simRecipes[:10]
     else:
-        return recommendation
+        return list(recommendation)
 
 # This function returns the most popular recipes based on category
 # If ten recipes have not been liked from a category the first several are

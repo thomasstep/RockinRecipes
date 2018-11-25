@@ -21,6 +21,8 @@ for fileName in fileNames:
 # Getting all user info
 users = loadUsersJson()
 
+print(recommender("ray-mishra@tamu.edu",1,users,recipes))
+
 @app.route("/getIdRecommendations", methods=["GET"])
 def getRecommendations():
     requestJson = request.args
