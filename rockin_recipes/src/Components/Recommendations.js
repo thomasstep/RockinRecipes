@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { connect } from "react-redux";
-import Dropdown from 'react-dropdown'
-import 'react-dropdown/style.css'
 import { addRecommendationsAction } from "../redux/actions.js"
 
 class Recommendations extends Component {
@@ -94,7 +92,7 @@ class Recommendations extends Component {
                 <form onSubmit={this.handleSelectSubmit}>
                     <label>
                         Pick your Food Genre:
-                        <select value={this.state.foodSelection} onChange={this.handleSelect}>
+                        <select value={this.state.foodSelection} onChange={this.handleSelectChange}>
                             <option value="" selected> -- Select an Option --</option>
                             <option value="American">American</option>
                             <option value="Chinese">Chinese</option>
