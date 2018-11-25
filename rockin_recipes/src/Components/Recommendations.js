@@ -13,7 +13,7 @@ class Recommendations extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this)
     }
-    
+
     handleChange(event) {
         this.setState({recipeId: event.target.value});
     }
@@ -46,14 +46,6 @@ class Recommendations extends Component {
         )
     }
 }
-
-// function validate(values) {
-//     const errors = {};
-//     if(values.recipeID > 1000 || values.recipeID < 0) {
-//         errors.recipeID = "Please enter a recipe between 1 and 1000";
-//     }
-//     return errors;
-// }
 
 const mapDispatchToProps = {
     addRecommendationsAction
