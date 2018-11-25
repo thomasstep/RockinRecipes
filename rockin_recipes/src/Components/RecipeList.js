@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import { connect } from "react-redux";
+import Likes from "./Likes.js";
 
 class RecipeList extends Component {
     componentDidMount() {
@@ -33,6 +34,7 @@ class RecipeList extends Component {
                 <h3 style={displayStyle}>Recipe ID: {e.recipeId}</h3>
                 <a href={e.url}><img style={displayStyle} src={e.image} alt="img"></img></a>
                 <p style={displayStyle}>{listIngredients(e)}</p>
+                <Likes>Like</Likes>
             </React.Fragment>
         ));
         const dislikes = this.props.dislikes.map(e => (
@@ -41,6 +43,7 @@ class RecipeList extends Component {
                 <h3 style={displayStyle}>Recipe ID: {e.recipeId}</h3>
                 <a href={e.url}><img style={displayStyle} src={e.image} alt="img"></img></a>
                 <p style={displayStyle}>{listIngredients(e)}</p>
+                <Likes></Likes>
             </React.Fragment>
         ));
         const recommendations = this.props.recommendations.map(e => (
