@@ -2,7 +2,8 @@
 #~ from flask_cors import CORS
 
 from ioFunctions import loadRecipesJson, loadUsersJson, saveUsersJson, createUser
-from algorithms import getSimilarUsers, getSimilarRecipes, recommender
+from algorithms import getSimilarUsers, getSimilarRecipes, getPopularCategoryRecipes, searchCorpus, recommender
+
 from constants import newUserTemplate
 
 #~ app = Flask(__name__)
@@ -20,17 +21,27 @@ for fileName in fileNames:
 # Getting all user info
 users = loadUsersJson()
 
-createUser('homeboycav@tamu.edu')
-recommendation = recommender('ray-mishra@tamu.edu',1,users,recipes)
-print(recommendation)
-
-
-@app.route("/getRecommendations", methods=["GET"])
+@app.route("/getIdRecommendations", methods=["GET"])
 def getRecommendations():
     requestJson = request.args
     originalRecipe = requestJson["recipeId"]
     similarRecipes = getSimilarRecipes(originalRecipe, recipes)
     return jsonify(similarRecipes)
+
+
+@app.route("/getCategoryRecommendations", methods=["GET"])
+def getCatRecommendations():
+    requestJson = request.args
+    category = requestJson["category"]
+    popularCategoryRecipes = getPopularCategoryRecipes(category, recipes, users)
+    return jsonify(popularCategoryRecipes)
+
+@app.route("/getSearchResults", methods=["GET"])
+def getSearchResults():
+    requestJson = request.args
+    query = requestJson["query"]
+    results = searchCorpus(query, recipes)
+    return jsonify(results)
 
 @app.route("/getRecipe", methods=["GET"])
 def getRecipe():
@@ -60,6 +71,7 @@ def getDefaults():
     defaults = ["0", "100", "200", "300", "400", "500", "600", "700", "800", "900",]
     return jsonify(defaults)
 
+#TODO check the the recipeID is not in dislikes, if it is take it out
 @app.route("/addLike",methods=["GET"])
 def addLike():
     requestJson = request.args
@@ -78,7 +90,7 @@ def addLike():
     saveUsersJson(users)
     return jsonify(user)
 
-
+#TODO check the the recipeID is not in likes, if it is take it out
 @app.route("/addDislike",methods=["GET"])
 def addDislike():
     requestJson = request.args
@@ -96,13 +108,3 @@ def addDislike():
     user['dislikes'].append(int(recipeId))
     saveUsersJson(users)
     return jsonify(user)
-
-#TODO add to a users likes and dislikes, recommender using similar users and recipes
-
-
-# for user in users:
-#     getSimilarUsers(user, users)
-# similarRecipes = getSimilarRecipes(0, recipes)
-# for recipe in similarRecipes:
-#     if recipe[0] != "0":
-#         print(recipes[recipe[0]]["name"])
