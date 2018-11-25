@@ -142,3 +142,49 @@ def getPopularCategoryRecipes(category, recipes, users):
             topTen.append(startingRecipe)
         startingRecipe += 1
     return topTen
+
+# This function returns the first ten recipes that match a query for recipes
+def searchCorpus(query, recipes):
+    tf, totalDocs = getCorpusNamesTermFrequencies(recipes)
+    similar = getNameVectorSpaceModel(query, tf, recipes, totalDocs)
+    # Sort the scores then return them
+    sortedRecipes = sorted(similar.items(), key=operator.itemgetter(1), reverse=True)
+    sortedRecipeIds = []
+    for recipe in sortedRecipes:
+        sortedRecipeIds.append(recipe[0])
+    sortedRecipeIds = sortedRecipeIds[:10]
+    print(sortedRecipeIds)
+    return sortedRecipeIds
+
+def getCorpusNamesTermFrequencies(recipes):
+    similarRecipes = []
+    # TF for recipes
+    tf = {}
+    totalDocs = len(recipes.keys())
+    for recipe in recipes.values():
+        words = re.findall(r'\w+', recipe["name"].lower())
+        for word in words:
+            currentValue = tf.get(word, 0)
+            tf[word] = currentValue + 1
+    return tf, totalDocs
+
+def getNameVectorSpaceModel(query, tf, recipes, totalDocs):
+    similar = {}
+    # Start by getting relevant info from original recipe ingredients
+    recipeIdVector = getNameVector(query, tf)
+    getTfIdf(recipeIdVector, tf, totalDocs)
+    # Do the same for all other recipes and measure their similarities
+    for recipe in recipes.keys():
+        compareVector = getNameVector(recipes[str(recipe)]["name"], tf)
+        getTfIdf(compareVector, tf, totalDocs)
+        cosineScore = getCosine(recipeIdVector, compareVector)
+        similar[recipe] = cosineScore
+    return similar
+
+def getNameVector(recipeName, tf):
+    recipeVector = dict.fromkeys(tf, 0)
+    words = re.findall(r'\w+', recipeName.lower())
+    for word in words:
+        currentValue = recipeVector.get(word, 0)
+        recipeVector[word] = currentValue + 1
+    return recipeVector
