@@ -47,7 +47,11 @@ class Recommendations extends Component {
     handleSubmit(event) {
         event.preventDefault();
         var recommendationsList = [];
-        axios.get(`http://localhost:5000/getRecommendations?recipeId=${this.state.recipeId}`)
+        axios.get(`http://localhost:5000/getRecipe?recipeId=${this.state.recipeId}`)
+            .then(res => {
+                recommendationsList.push(res.data);
+        });
+        axios.get(`http://localhost:5000/getIdRecommendations?recipeId=${this.state.recipeId}`)
             .then(res => {
                 var recommendations = res.data;
                 for (var i = 0; i < 10; i++) {
@@ -111,14 +115,6 @@ class Recommendations extends Component {
         )
     }
 }
-
-// function validate(values) {
-//     const errors = {};
-//     if(values.recipeID > 1000 || values.recipeID < 0) {
-//         errors.recipeID = "Please enter a recipe between 1 and 1000";
-//     }
-//     return errors;
-// }
 
 const mapDispatchToProps = {
     addRecommendationsAction
