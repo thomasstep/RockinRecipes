@@ -8,18 +8,18 @@ def getSimilarUsers(baseUserId, allUsers):
     similarUsers = []
     jaccardScores = {}
     # Look at similar likes and dislikes in all other users
-    baseUserId = allUsers[baseUserId]
+    baseUser = allUsers[baseUserId]
     
     for userid in allUsers.keys():
         user = allUsers[userid]
         if baseUserId != userid:
-            likesIntersection = set(baseUserId['likes']) & set(user["likes"])
-            likesUnion = set(baseUserId["likes"]) | set(user["likes"])
+            likesIntersection = set(baseUser['likes']) & set(user["likes"])
+            likesUnion = set(baseUser["likes"]) | set(user["likes"])
             if len(likesUnion) != 0:
                 likesJaccard = len(likesIntersection) / len(likesUnion)
 
-            dislikesIntersection = set(baseUserId["dislikes"]) & set(user["dislikes"])
-            dislikesUnion = set(baseUserId["dislikes"]) | set(user["dislikes"])
+            dislikesIntersection = set(baseUser["dislikes"]) & set(user["dislikes"])
+            dislikesUnion = set(baseUser["dislikes"]) | set(user["dislikes"])
             if len(dislikesUnion) != 0:
                 dislikesJaccard = len(dislikesIntersection) / len(dislikesUnion)
 
