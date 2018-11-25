@@ -50,8 +50,6 @@ def getTfIdf(recipeVector, tf, totalDocs):
     for word in recipeVector.keys():
         if recipeVector[word] > 0:
             recipeVector[word] = 1 + log(recipeVector[word], 10)
-            if int(log10(totalDocs/tf[word])) > 0:
-                print("howdy")
             if tf[word] > 0:
                 recipeVector[word] *= log(totalDocs/tf[word], 10)
             elif tf[word] <= 0:
