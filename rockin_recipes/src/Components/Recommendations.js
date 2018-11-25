@@ -16,6 +16,7 @@ class Recommendations extends Component {
         this.handleSearchChange = this.handleSearchChange.bind(this);
         this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
 
+    
     }
 
     handleChange(event) {
