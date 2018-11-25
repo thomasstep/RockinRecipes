@@ -115,8 +115,8 @@ class Likes extends React.Component {
 
         return (
             <div>
-                <button type="button" onClick={this.liked}>Like</button>
-                <button type="button" onClick={this.disliked}>Dislike</button>
+                <button type="button" onClick={this.liked}>Thumbs Up!</button>
+                <button type="button" onClick={this.disliked}>Thumbs Down!</button>
                 <p>{this.state.status}</p>
             </div>
         );
