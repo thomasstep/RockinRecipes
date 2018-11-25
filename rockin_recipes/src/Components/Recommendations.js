@@ -16,9 +16,7 @@ class Recommendations extends Component {
         }
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleSelect = this.handleSelect.bind(this);
-        this.handleSearchChange = this.handleSearchChange.bind(this);
-        this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
+        this.handleSelectChange = this.handleSelectChange.bind(this);
         this.handleSelectSubmit = this.handleSelectSubmit.bind(this);
     }
 
@@ -42,11 +40,7 @@ class Recommendations extends Component {
         this.setState({ recipeId: event.target.value });
     }
 
-    handleSearchChange(event) {
-        this.setState({ foodType: event.target.value });
-    }
-
-    handleSelect(event) {
+    handleSelectChange(event) {
         this.setState({ foodSelection: event.target.value });
     }
 
@@ -63,22 +57,6 @@ class Recommendations extends Component {
                         });
                 }
                 this.props.addRecommendationsAction(recommendationsList);
-            });
-    }
-
-    handleSearchSubmit(event) {
-        event.preventDefault();
-        var foodRecommendationsList = [];
-        axios.get(`http://localhost:5000/getSearchResults?query=${this.state.foodType}`)
-            .then(res => {
-                var recommendations = res.data;
-                for (var i = 0; i < 10; i++) {
-                    axios.get(`http://localhost:5000/getRecipe?recipeId=${recommendations[i]}`)
-                        .then(res => {
-                            foodRecommendationsList.push(res.data);
-                        });
-                }
-                this.props.addRecommendationsAction(foodRecommendationsList);
             });
     }
 
@@ -109,11 +87,6 @@ class Recommendations extends Component {
                     <input type="text" value={this.state.recipeId} onChange={this.handleChange}></input><br />
                     <input type="submit" value="Get Recommendations"></input><br />
                 </form>
-                <form onSubmit={this.handleSearchSubmit}>
-                    Please enter a food&nbsp;
-                    <input type="text" value={this.state.foodType} onChange={this.handleSearchChange}></input><br />
-                    <input type="submit" value="Get Food Recomendations"></input><br />
-                </form>
                 <form onSubmit={this.handleSelectSubmit}>
                     <label>
                         Pick your Food Genre:
@@ -123,6 +96,12 @@ class Recommendations extends Component {
                             <option value="Chinese">Chinese</option>
                             <option value="Italian">Italian</option>
                             <option value="Mexican">Mexican</option>
+                            <option value="Beans">Beans</option>
+                            <option value="Beef">Beef</option>
+                            <option value="Chicken">Chicken</option>
+                            <option value="Pork">Pork</option>
+                            <option value="Rice">Rice</option>
+                            <option value="Tofu">Tofu</option>
                         </select>
                     </label>
                     <input type="submit" value="Submit"></input><br />
