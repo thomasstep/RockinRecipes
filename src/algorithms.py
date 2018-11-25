@@ -2,12 +2,14 @@ import operator
 import re
 from math import log,log10, sqrt
 
-def getSimilarUsers(baseUser, allUsers):
+def getSimilarUsers(baseUserId, allUsers):
     similarUsers = []
     jaccardScores = {}
     # Look at similar likes and dislikes in all other users
-    for user in allUsers:
-        if baseUser["id"] != user["id"]:
+    baseUser = allUsers[baseUserId]
+    for userid in allUsers.keys():
+        user = allUsers[userid]
+        if baseUserId != userid:
             likesIntersection = set(baseUser["likes"]) & set(user["likes"])
             likesUnion = set(baseUser["likes"]) | set(user["likes"])
             if len(likesUnion) != 0:
@@ -19,7 +21,7 @@ def getSimilarUsers(baseUser, allUsers):
                 dislikesJaccard = len(dislikesIntersection) / len(dislikesUnion)
 
             # Our "Jaccard" will be the average of the two Jaccards
-            jaccardScores[user["id"]] = (likesJaccard + dislikesJaccard) / 2
+            jaccardScores[userid] = (likesJaccard + dislikesJaccard) / 2
 
     sortedInfo = sorted(jaccardScores.items(), key=operator.itemgetter(1), reverse=True)
     return sortedInfo
@@ -103,14 +105,19 @@ def recommender(userId, recipeId, allUsers, allRecipes):
     
     simRecipes = getSimilarRecipes(recipeId,allRecipes)
     simUsers = getSimilarUsers(userId, allUsers)[:10]
-    
     recommendation = []
     
-    #~ while recommender.len() < 10:
-        #~ for recipeId in simRecipes:
-            #~ for user in simUsers:
-                #~ if recipeId in user['likes']:
-                    #~ recommendation.append(recipeId)
-                    
-    return recommendation
+    #while len(recommendation) < 10:
+        
+    for recipeId in simRecipes:
+        for user in simUsers:
+            if int(recipeId) in allUsers[user[0]]['likes']:
+                recommendation.append(recipeId)
+                
+                
+    if (len(recommendation) == 0):
+        print("no recommendation")
+        return simRecipes[:10]
+    else:
+        return recommendation
 

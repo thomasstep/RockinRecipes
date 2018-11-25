@@ -21,7 +21,7 @@ for fileName in fileNames:
 users = loadUsersJson()
 
 createUser('homeboycav@tamu.edu')
-recommendation = recommender('ray-mishra@tamu.edu',10,users,recipes)
+recommendation = recommender('ray-mishra@tamu.edu',1,users,recipes)
 print(recommendation)
 
 
