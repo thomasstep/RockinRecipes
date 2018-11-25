@@ -1,6 +1,6 @@
 import operator
 import re
-from math import log, sqrt
+from math import log,log10, sqrt
 
 def getSimilarUsers(baseUser, allUsers):
     similarUsers = []
@@ -50,7 +50,13 @@ def getTfIdf(recipeVector, tf, totalDocs):
     for word in recipeVector.keys():
         if recipeVector[word] > 0:
             recipeVector[word] = 1 + log(recipeVector[word], 10)
-            recipeVector[word] *= log(totalDocs/tf[word], 10)
+            if int(log10(totalDocs/tf[word])) > 0:
+                print("howdy")
+            if tf[word] > 0:
+                recipeVector[word] *= log(totalDocs/tf[word], 10)
+            elif tf[word] <= 0:
+                recipeVector[word] = 0
+
 
 def getCosine(vectorOne, vectorTwo):
     numerator = 0
@@ -93,3 +99,20 @@ def getSimilarRecipes(recipeId, recipes):
         sortedRecipeIds.append(recipe[0])
     sortedRecipeIds = sortedRecipeIds[:100]
     return sortedRecipeIds  
+    
+    
+def recommender(userId, recipeId, allUsers, allRecipes):
+    
+    simRecipes = getSimilarRecipes(recipeId,allRecipes)
+    simUsers = getSimilarUsers(userId, allUsers)[:10]
+    
+    recommendation = []
+    
+    #~ while recommender.len() < 10:
+        #~ for recipeId in simRecipes:
+            #~ for user in simUsers:
+                #~ if recipeId in user['likes']:
+                    #~ recommendation.append(recipeId)
+                    
+    return recommendation
+
