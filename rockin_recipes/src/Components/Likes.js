@@ -1,5 +1,7 @@
 import React from 'react';
 import axios from 'axios';
+import { connect } from "react-redux";
+import {addLikesAction, addDislikesAction } from "../redux/actions.js"
 //Idea create an array with each recipe id assigned to 0. change to -1 for dislike and 1 for like
 //use axios based on each value in this array[recipeId:value]
 class Likes extends React.Component {
@@ -27,10 +29,30 @@ class Likes extends React.Component {
      });
      axios.get(`http://localhost:5000/addLike?recipeId=${this.props.recipeid}&userId=${this.props.userid}`)
              .then(res => {
-               // console.log("sucess in disliking")
-             // Either this gets super huge or recipes is always empty so no need to concat
-             //var newData = this.state.recipes.concat([res.data])
-             //this.setState({recipes: newData});
+                axios.get(`http://localhost:5000/getUser?userId=${this.props.userid}`)
+                .then(res => {
+                    var likesIds = res.data.likes;
+                    var likesList = [];
+                    for (var i = 0; i < likesIds.length; i++) {
+                        axios.get(`http://localhost:5000/getRecipe?recipeId=${likesIds[i]}`)
+                            .then(res => {
+                                var data = res.data;
+                                likesList.push(data);
+                            });
+                    }
+                    this.props.addLikesAction(likesList);
+    
+                    var dislikesIds = res.data.dislikes;
+                    var dislikesList = [];
+                    for (var j = 0; j < dislikesIds.length; j++) {
+                        axios.get(`http://localhost:5000/getRecipe?recipeId=${dislikesIds[j]}`)
+                            .then(res => {
+                                var data = res.data;
+                                dislikesList.push(data);
+                            });
+                    }
+                    this.props.addDislikesAction(dislikesList);
+                });
          })
  }
  disliked =() =>
@@ -45,10 +67,30 @@ class Likes extends React.Component {
      }) 
      axios.get(`http://localhost:5000/addDislike?recipeId=${this.props.recipeid}&userId=${this.props.userid}`)
          .then(res => {
-             //console.log("sucess in disliking")
-         // Either this gets super huge or recipes is always empty so no need to concat
-         //var newData = this.state.recipes.concat([res.data])
-         //this.setState({recipes: newData});
+            axios.get(`http://localhost:5000/getUser?userId=${this.props.userid}`)
+            .then(res => {
+                var likesIds = res.data.likes;
+                var likesList = [];
+                for (var i = 0; i < likesIds.length; i++) {
+                    axios.get(`http://localhost:5000/getRecipe?recipeId=${likesIds[i]}`)
+                        .then(res => {
+                            var data = res.data;
+                            likesList.push(data);
+                        });
+                }
+                this.props.addLikesAction(likesList);
+
+                var dislikesIds = res.data.dislikes;
+                var dislikesList = [];
+                for (var j = 0; j < dislikesIds.length; j++) {
+                    axios.get(`http://localhost:5000/getRecipe?recipeId=${dislikesIds[j]}`)
+                        .then(res => {
+                            var data = res.data;
+                            dislikesList.push(data);
+                        });
+                }
+                this.props.addDislikesAction(dislikesList);
+            });
      });
  }
  /*updateLikes = () => {
@@ -84,5 +126,9 @@ class Likes extends React.Component {
     );
   }
 }
+const mapDispatchToProps = {
+    addLikesAction,
+    addDislikesAction
+};
 
-export default Likes;
+export default connect(null, mapDispatchToProps)(Likes);
