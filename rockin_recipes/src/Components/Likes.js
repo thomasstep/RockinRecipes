@@ -1,5 +1,6 @@
 import React from 'react';
-
+//Idea create an array with each recipe id assigned to 0. change to -1 for dislike and 1 for like
+//use axios based on each value in this array[recipeId:value]
 class Likes extends React.Component {
 
   constructor(props){
