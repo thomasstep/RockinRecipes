@@ -26,7 +26,7 @@ class RecipeList extends Component {
             fontSize: '35px',
             color: 'green',
         }
-        
+
         const likes = this.props.likes.map(e => (
             <React.Fragment>
                 <h3 style={displayStyle}>{e.name}</h3>
@@ -46,6 +46,7 @@ class RecipeList extends Component {
         const recommendations = this.props.recommendations.map(e => (
             <React.Fragment>
                 <h3 style={displayStyle}>{e.name}</h3>
+                <h3 style={displayStyle}>Recipe ID: {e.recipeId}</h3>
                 <img style={displayStyle} src={e.image} alt="img"></img>
                 <div> <a href={e.url}>Click Here To Go To Recipe</a> </div>
                 <p style={displayStyle}>{listIngredients(e)}</p>
@@ -53,7 +54,7 @@ class RecipeList extends Component {
         ));
         return (
         <div>
-            
+
             <div>
                 {this.props.user === "" ? <h2>Please log in</h2> : <h2>Welcome {this.props.user}!</h2>}
                 {this.props.recommendations.length === 0 ? <h2></h2> : <h2 style={recommendationsHeader}>These are some recipes we would like to recommend</h2>}

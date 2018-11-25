@@ -21,6 +21,10 @@ class Recommendations extends Component {
     handleSubmit(event) {
         event.preventDefault();
         var recommendationsList = [];
+        axios.get(`http://localhost:5000/getRecipe?recipeId=${this.state.recipeId}`)
+            .then(res => {
+                recommendationsList.push(res.data);
+        });
         axios.get(`http://localhost:5000/getIdRecommendations?recipeId=${this.state.recipeId}`)
             .then(res => {
                 var recommendations = res.data;
