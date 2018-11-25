@@ -18,22 +18,6 @@ class Recommendations extends Component {
 
     }
 
-    onSubmit(values){
-        this.setState({recipes: []});
-        axios.get(`http://localhost:5000/getRecommendations?recipeId=${values.RecipeID}`)
-            .then(res => {
-            this.setState({recommendations: res.data})
-            for ( var i = 0; i < 10; i++){
-                axios.get(`http://localhost:5000/getRecipe?recipeId=${this.state.recommendations[i]}`)
-                    .then(res => {
-                    // Either this gets super huge or recipes is always empty so no need to concat
-                    var newData = this.state.recipes.concat([res.data])
-                    this.setState({recipes: newData});
-                })
-            }
-        })
-    }
-
     handleChange(event) {
         this.setState({recipeId: event.target.value});
     }
@@ -45,7 +29,11 @@ class Recommendations extends Component {
     handleSubmit(event) {
         event.preventDefault();
         var recommendationsList = [];
-        axios.get(`http://localhost:5000/getRecommendations?recipeId=${this.state.recipeId}`)
+        axios.get(`http://localhost:5000/getRecipe?recipeId=${this.state.recipeId}`)
+            .then(res => {
+                recommendationsList.push(res.data);
+        });
+        axios.get(`http://localhost:5000/getIdRecommendations?recipeId=${this.state.recipeId}`)
             .then(res => {
                 var recommendations = res.data;
                 for ( var i = 0; i < 10; i++){
