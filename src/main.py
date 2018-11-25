@@ -25,8 +25,8 @@ users = loadUsersJson()
 def getRecommendations():
     requestJson = request.args
     originalRecipe = requestJson["recipeId"]
-    similarRecipes = getSimilarRecipes(originalRecipe, recipes)
-    return jsonify(similarRecipes)
+    userId = requestJson["userId"]
+    return recommender(userId, originalRecipe,users, recipes)
 
 
 @app.route("/getCategoryRecommendations", methods=["GET"])
