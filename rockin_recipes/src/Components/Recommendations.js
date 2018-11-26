@@ -39,7 +39,7 @@ class Recommendations extends Component {
             .then(res => {
                 recommendationsList.push(res.data);
         });
-        axios.get(`http://localhost:5000/getIdRecommendations?recipeId=${this.state.recipeId}&userId=${this.props.user}]`)
+        axios.get(`http://localhost:5000/getIdRecommendations?recipeId=${this.state.recipeId}&userId=${this.props.user}`)
             .then(res => {
                 var recommendations = res.data;
                 for (var i = 0; i < 10; i++) {
@@ -118,7 +118,7 @@ class Recommendations extends Component {
                     <input type="text" value={this.state.foodType} onChange={this.handleSearchChange}></input><br/>
                     <input type="submit" value="Get Food Recomendations"></input><br/>
                 </form>
-                
+
             </div>
         )
     }
