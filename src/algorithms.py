@@ -1,15 +1,19 @@
 import operator
 import re
-from math import log, sqrt
+from math import log,log10, sqrt
+
 
 # Ranks users by similarity based on Jaccard
-def getSimilarUsers(baseUser, allUsers):
+def getSimilarUsers(baseUserId, allUsers):
     similarUsers = []
     jaccardScores = {}
     # Look at similar likes and dislikes in all other users
-    for user in allUsers:
-        if baseUser["id"] != user["id"]:
-            likesIntersection = set(baseUser["likes"]) & set(user["likes"])
+    baseUser = allUsers[baseUserId]
+    
+    for userid in allUsers.keys():
+        user = allUsers[userid]
+        if baseUserId != userid:
+            likesIntersection = set(baseUser['likes']) & set(user["likes"])
             likesUnion = set(baseUser["likes"]) | set(user["likes"])
             if len(likesUnion) != 0:
                 likesJaccard = len(likesIntersection) / len(likesUnion)
@@ -20,7 +24,7 @@ def getSimilarUsers(baseUser, allUsers):
                 dislikesJaccard = len(dislikesIntersection) / len(dislikesUnion)
 
             # Our "Jaccard" will be the average of the two Jaccards
-            jaccardScores[user["id"]] = (likesJaccard + dislikesJaccard) / 2
+            jaccardScores[userid] = (likesJaccard + dislikesJaccard) / 2
 
     sortedInfo = sorted(jaccardScores.items(), key=operator.itemgetter(1), reverse=True)
     return sortedInfo
@@ -54,7 +58,11 @@ def getTfIdf(recipeVector, tf, totalDocs):
     for word in recipeVector.keys():
         if recipeVector[word] > 0:
             recipeVector[word] = 1 + log(recipeVector[word], 10)
-            recipeVector[word] *= log(totalDocs/tf[word], 10)
+            if tf[word] > 0:
+                recipeVector[word] *= log(totalDocs/tf[word], 10)
+            elif tf[word] <= 0:
+                recipeVector[word] = 0
+
 
 # Returns the cosine of two vectors
 def getCosine(vectorOne, vectorTwo):
@@ -100,7 +108,27 @@ def getSimilarRecipes(recipeId, recipes):
         if recipe[0] != recipeId:
             sortedRecipeIds.append(recipe[0])
     sortedRecipeIds = sortedRecipeIds[:100]
-    return sortedRecipeIds
+
+    return sortedRecipeIds  
+    
+    
+def recommender(userId, recipeId, allUsers, allRecipes):
+    
+    simRecipes = getSimilarRecipes(recipeId,allRecipes)
+    simUsers = getSimilarUsers(userId, allUsers)[:10]
+    recommendation = set()
+        
+    for recipeId in simRecipes:
+        for user in simUsers:
+            if int(recipeId) in allUsers[user[0]]['likes']:
+                recommendation.add(recipeId)
+                
+    
+    if (len(recommendation) == 0):
+        print("no recommendation")
+        return simRecipes[:10]
+    else:
+        return list(recommendation)
 
 # This function returns the most popular recipes based on category
 # If ten recipes have not been liked from a category the first several are
@@ -189,4 +217,4 @@ def getNameVector(recipeName, tf):
         currentValue = recipeVector.get(word, 0)
         recipeVector[word] = currentValue + 1
     return recipeVector
-  
+ 
