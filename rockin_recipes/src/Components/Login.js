@@ -29,7 +29,8 @@ class Login extends Component {
                 for (var i = 0; i < likesIds.length; i++) {
                     axios.get(`http://localhost:5000/getRecipe?recipeId=${likesIds[i]}`)
                         .then(res => {
-                            likesList.push(res.data)
+                            var data = res.data;
+                            likesList.push(data);
                         });
                 }
                 this.props.addLikesAction(likesList);
@@ -39,7 +40,8 @@ class Login extends Component {
                 for (var j = 0; j < dislikesIds.length; j++) {
                     axios.get(`http://localhost:5000/getRecipe?recipeId=${dislikesIds[j]}`)
                         .then(res => {
-                            dislikesList.push(res.data)
+                            var data = res.data;
+                            dislikesList.push(data);
                         });
                 }
                 this.props.addDislikesAction(dislikesList);
@@ -48,25 +50,23 @@ class Login extends Component {
     }
 
     render () {
+        const title = {
+            fontSize: '60px',
+            color: 'purple',
+            textAlign: 'center',
+        }
         return (
+            <div>
+            <h1 style={title}>ROCKIN' RECIPES</h1>
             <form onSubmit={this.handleSubmit}>
                 Please enter your email&nbsp;
                 <input type="text" value={this.state.username} onChange={this.handleChange}></input><br/>
                 <input type="submit" value="Login"></input><br/>
             </form>
+            </div>
         )
     }
 }
-
-// function validate(values) {
-//     const errors = {};
-//     if(!values.email)
-//     {
-//         errors.email = 'Please enter an email';
-//     }
-//
-//     return errors;
-// }
 
 const mapDispatchToProps = {
     loginUsernameAction,
