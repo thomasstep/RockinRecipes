@@ -112,8 +112,8 @@ class Recommendations extends Component {
                             <option value="Tofu">Tofu</option>
                         </select>
                     </label>
+                    <input type="submit" value="Submit"></input><br />
                 </form>
-                <input type="submit" value="Submit"></input><br />
                 </div>
                 <form onSubmit={this.handleSearchSubmit}>
                     Please enter a food&nbsp;
