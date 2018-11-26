@@ -88,6 +88,10 @@ def addLike():
     else:
         users[str(userId)] = newUserTemplate
         user = users[str(userId)]
+
+    if  int(recipeId) in user['dislikes']:
+        user['dislikes'].remove(int(recipeId))
+
     user['likes'].append(int(recipeId))
     saveUsersJson(users)
     return jsonify(user)
@@ -107,6 +111,10 @@ def addDislike():
     else:
         users[str(userId)] = newUserTemplate
         user = users[str(userId)]
+
+    if  int(recipeId) in user['likes']:
+        user['likes'].remove(int(recipeId))
+
     user['dislikes'].append(int(recipeId))
     saveUsersJson(users)
     return jsonify(user)
