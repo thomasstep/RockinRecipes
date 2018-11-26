@@ -2,7 +2,8 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 
 from ioFunctions import loadRecipesJson, loadUsersJson, saveUsersJson, createUser
-from algorithms import getSimilarUsers, getSimilarRecipes, getPopularCategoryRecipes, searchCorpus
+from algorithms import getSimilarUsers, getSimilarRecipes, getPopularCategoryRecipes, searchCorpus, recommender
+
 from constants import newUserTemplate
 
 app = Flask(__name__)
@@ -20,12 +21,14 @@ for fileName in fileNames:
 # Getting all user info
 users = loadUsersJson()
 
+print(recommender("ray-mishra@tamu.edu",1,users,recipes))
+
 @app.route("/getIdRecommendations", methods=["GET"])
 def getRecommendations():
     requestJson = request.args
     originalRecipe = requestJson["recipeId"]
-    similarRecipes = getSimilarRecipes(originalRecipe, recipes)
-    return jsonify(similarRecipes)
+    userId = requestJson["userId"]
+    return jsonify(recommender(userId, originalRecipe,users, recipes))
 
 
 @app.route("/getCategoryRecommendations", methods=["GET"])
