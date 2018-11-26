@@ -18,17 +18,22 @@ class RecipeList extends Component {
         const likesHeader = {
             fontSize: '35px',
             color: 'blue',
+            fontStyle: 'underline'
         }
         const dislikesHeader = {
             fontSize: '35px',
             color: 'red',
+            fontWeight: 'underline'
         }
         const recommendationsHeader = {
             fontSize: '35px',
             color: 'green',
+            fontWeight: 'underline'
+
         }
 
         const likes = this.props.likes.map(e => (
+        <div style={{display: 'inline-table',width: '300px', padding: '10px'}}>
             <React.Fragment>
                 <h3 style={displayStyle}>{e.name}</h3>
                 <h3 style={displayStyle}>Recipe ID: {e.recipeId}</h3>
@@ -36,8 +41,10 @@ class RecipeList extends Component {
                 <p style={displayStyle}>{listIngredients(e)}</p>
                 <Likes recipeid={e.recipeId} userid={this.props.user} ></Likes>
             </React.Fragment>
+        </div>
         ));
         const dislikes = this.props.dislikes.map(e => (
+        <div style={{display: 'inline-table',width: '300px', padding: '15px'}}>
             <React.Fragment>
                 <h3 style={displayStyle}>{e.name}</h3>
                 <h3 style={displayStyle}>Recipe ID: {e.recipeId}</h3>
@@ -45,8 +52,10 @@ class RecipeList extends Component {
                 <p style={displayStyle}>{listIngredients(e)}</p>
                 <Likes recipeid={e.recipeId} userid={this.props.user}></Likes>
             </React.Fragment>
+        </div>
         ));
         const recommendations = this.props.recommendations.map(e => (
+        <div style={{display: 'inline-table',width: '300px', padding: '10px'}}>
             <React.Fragment>
                 <h3 style={displayStyle}>{e.name}</h3>
                 <h3 style={displayStyle}>Recipe ID: {e.recipeId}</h3>
@@ -55,12 +64,12 @@ class RecipeList extends Component {
                 <p style={displayStyle}>{listIngredients(e)}</p>
                 <Likes recipeid={e.recipeId} userid={this.props.user}></Likes>
             </React.Fragment>
+        </div>
         ));
         return (
-        <div>
-
-            <div>
-                {this.props.user === "" ? <h2 style={{color: 'red'}}>Please log in</h2> : <h2>Welcome {this.props.user}!</h2>}
+        <div >
+            <div >
+                {this.props.user === "" ? <h2 style={{color: 'red'}}>Please log in</h2> : <h2 style={{fontStyle: 'italic', fontWeight: 'initial'}}>Welcome {this.props.user}!</h2>}
                 {this.props.recommendations.length === 0 ? <h2></h2> : <h2 style={recommendationsHeader}>These are some recipes we would like to recommend</h2>}
                 {recommendations}
                 {this.props.likes.length === 0 ? <h2></h2> : <h2 style={likesHeader}>Recipes You've Liked</h2>}
