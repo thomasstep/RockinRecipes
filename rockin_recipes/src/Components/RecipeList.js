@@ -56,7 +56,7 @@ class RecipeList extends Component {
         <div>
 
             <div>
-                {this.props.user === "" ? <h2>Please log in</h2> : <h2>Welcome {this.props.user}!</h2>}
+                {this.props.user === "" ? <h2 style={{color: 'red'}}>Please log in</h2> : <h2>Welcome {this.props.user}!</h2>}
                 {this.props.recommendations.length === 0 ? <h2></h2> : <h2 style={recommendationsHeader}>These are some recipes we would like to recommend</h2>}
                 {recommendations}
                 {this.props.likes.length === 0 ? <h2></h2> : <h2 style={likesHeader}>Recipes You've Liked</h2>}

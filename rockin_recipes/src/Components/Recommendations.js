@@ -55,7 +55,7 @@ class Recommendations extends Component {
     handleSelectSubmit(event) {
         event.preventDefault();
         var foodRecommendationsList = [];
-        if(this.state.foodSelection != ""){
+        if(this.state.foodSelection !== ""){
             axios.get(`http://localhost:5000/getSearchResults?query=${this.state.foodSelection}`)
                 .then(res => {
                     var recommendations = res.data;
@@ -94,6 +94,7 @@ class Recommendations extends Component {
                     <input type="text" value={this.state.recipeId} onChange={this.handleChange}></input><br />
                     <input type="submit" value="Get Recommendations"></input><br />
                 </form>
+                <div style={{paddingTop: '15px', paddingBottom: '15px'}}>
                 <form onSubmit={this.handleSelectSubmit}>
                     <label>
                         Pick your Food Genre:
@@ -111,8 +112,9 @@ class Recommendations extends Component {
                             <option value="Tofu">Tofu</option>
                         </select>
                     </label>
-                    <input type="submit" value="Submit"></input><br />
                 </form>
+                <input type="submit" value="Submit"></input><br />
+                </div>
                 <form onSubmit={this.handleSearchSubmit}>
                     Please enter a food&nbsp;
                     <input type="text" value={this.state.foodType} onChange={this.handleSearchChange}></input><br/>
